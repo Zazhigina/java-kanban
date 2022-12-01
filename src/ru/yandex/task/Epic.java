@@ -1,10 +1,12 @@
+package ru.yandex.task;
+
 import java.util.HashMap;
 
 public class Epic extends Task {
     private HashMap<Integer, Subtask> subtasks = new HashMap<>();
 
-    public Epic(Status status, String name, String description) {
-        super(status, name, description);
+    public Epic( int id, String name, String description) {
+        super( id, name, description);
     }
 
     public void setId(Integer id) {

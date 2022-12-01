@@ -1,18 +1,28 @@
+package ru.yandex.manager;
+
+import ru.yandex.task.*;
+
 import java.util.HashMap;
-import java.util.Scanner;
+
+import ru.yandex.status.Status;
+
 
 public class Manager {
 
-    static Scanner scanner = new Scanner(System.in);
     public HashMap<Integer, Task> tasks = new HashMap<>();
 
     public HashMap<Integer, Epic> epics = new HashMap<>();
 
     public HashMap<Integer, Subtask> subtasks = new HashMap<>();
+    static Integer idIndex = 1;
 
+    public void save() {
+
+        idIndex = idIndex + 1;
+
+    }
 
     public void watchTask() {
-        System.out.println("Список задач:");
         for (Task value : this.tasks.values()) {
             System.out.println(value.toString());
         }
@@ -20,9 +30,9 @@ public class Manager {
 
     public void watchEpic() {
         for (Epic value : this.epics.values()) {
-            System.out.println("Список ");
+
             System.out.println(value.toString());
-            System.out.println("Подзадачи");
+
             for (Subtask subtask : value.getSubtasks().values()) {
                 System.out.println(subtask.toString());
 
@@ -32,7 +42,7 @@ public class Manager {
 
 
     public void watchSubtask() {
-        System.out.println("Всех подзадач:");
+
         for (Subtask value : this.subtasks.values()) {
             System.out.println(value.toString());
 
@@ -52,49 +62,41 @@ public class Manager {
     }
 
 
-    public void getTaskById(int id) {
-        System.out.println(tasks.get(id));
+    public Task getTaskById(int id) {
+        return tasks.get(id);
     }
 
-    public void getEpicById(int id) {
-        System.out.println(epics.get(id));
+    public Epic getEpicById(int id) {
+        return epics.get(id);
     }
 
-    public void getSubtaskById(int id) {
-        System.out.println(subtasks.get(id));
+    public Subtask getSubtaskById(int id) {
+        return subtasks.get(id);
     }
 
 
     public Task createTask(String name, String description) {
 
-        Task task = new Task(Status.NEW, name, description);
-        task.save();
+        Task task = new Task(idIndex, name, description);
+        save();
         this.tasks.put(task.getId(), task);
         return task;
     }
 
     public Epic createEpic(String name, String description) {
 
-        Epic epic = new Epic(Status.NEW, name, description);
-        epic.save();
+        Epic epic = new Epic(idIndex, name, description);
+        save();
         this.epics.put(epic.getId(), epic);
         return epic;
 
     }
 
-    public Subtask createSubtask(Task task, Epic epic) {
-        Subtask subtask = new Subtask(task, epic);
+    public Subtask createSubtask(String name, String description, Epic epic) {
+
+        Subtask subtask = new Subtask(idIndex, name, description, epic);
         this.subtasks.put(subtask.getId(), subtask);
         return subtask;
-    }
-
-    public Epic createEpicByTask(Task task) {
-        Epic epic = new Epic(task.getStatus(), task.getName(), task.getDescription());
-        epic.setId(task.getId());
-
-        this.epics.put(epic.getId(), epic);
-        epic.save();
-        return epic;
     }
 
 
@@ -116,33 +118,6 @@ public class Manager {
     }
 
 
-
-    public void updateStatusByTask(Task task, Status status) {
-        task.setStatus(status);
-
-    }
-
-    public void updateStatusByIdEpic(Epic epic, Status status) {
-        System.out.println("Не может обновлять статсы эпика");
-        watchEpic();
-    }
-
-    public void updateStatusByIdSubtask(Subtask subtask, Status status) {
-        subtask.setStatus(status);
-
-    }
-
-
-    public void addNewTaskInEpic(int id, String name, String description) {
-
-        Task newTask = new Task(Status.NEW, name, description);
-
-        Subtask newEpic = null;
-        Epic epic = newEpic.getEpicById(id);
-        Subtask subtask = new Subtask(newTask, epic);
-
-    }
-
     public void getListSubtaskByEpic(int id) {
 
         Epic epic = epics.get(id);
@@ -156,11 +131,11 @@ public class Manager {
     }
 
     public void updateEpic(Epic epic) {
-        tasks.put(epic.getId(), epic);
+        epics.put(epic.getId(), epic);
     }
 
     public void updateEpic(Subtask subtask) {
-        tasks.put(subtask.getId(), subtask);
+        subtasks.put(subtask.getId(), subtask);
     }
 
     public void checkStatusByEpic(int id) {
