@@ -9,44 +9,17 @@ import ru.yandex.status.Status;
 
 public class Manager {
 
-    public HashMap<Integer, Task> tasks = new HashMap<>();
+    private HashMap<Integer, Task> tasks = new HashMap<>();
 
-    public HashMap<Integer, Epic> epics = new HashMap<>();
+    private HashMap<Integer, Epic> epics = new HashMap<>();
 
-    public HashMap<Integer, Subtask> subtasks = new HashMap<>();
-    static Integer idIndex = 1;
+    private HashMap<Integer, Subtask> subtasks = new HashMap<>();
+    private Integer idIndex = 1;
 
     public void save() {
 
         idIndex = idIndex + 1;
 
-    }
-
-    public void watchTask() {
-        for (Task value : this.tasks.values()) {
-            System.out.println(value.toString());
-        }
-    }
-
-    public void watchEpic() {
-        for (Epic value : this.epics.values()) {
-
-            System.out.println(value.toString());
-
-            for (Subtask subtask : value.getSubtasks().values()) {
-                System.out.println(subtask.toString());
-
-            }
-        }
-    }
-
-
-    public void watchSubtask() {
-
-        for (Subtask value : this.subtasks.values()) {
-            System.out.println(value.toString());
-
-        }
     }
 
     public void removeAllTasks() {
@@ -134,7 +107,7 @@ public class Manager {
         epics.put(epic.getId(), epic);
     }
 
-    public void updateEpic(Subtask subtask) {
+    public void updateSubtask(Subtask subtask) {
         subtasks.put(subtask.getId(), subtask);
     }
 
@@ -156,5 +129,17 @@ public class Manager {
             }
         }
 
+    }
+
+    public HashMap<Integer, Task> getTasks() {
+        return tasks;
+    }
+
+    public HashMap<Integer, Epic> getEpics() {
+        return epics;
+    }
+
+    public HashMap<Integer, Subtask> getSubtasks() {
+        return subtasks;
     }
 }
