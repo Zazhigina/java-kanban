@@ -68,6 +68,7 @@ public class Manager {
     public Subtask createSubtask(String name, String description, Epic epic) {
 
         Subtask subtask = new Subtask(idIndex, name, description, epic);
+        save();
         this.subtasks.put(subtask.getId(), subtask);
         return subtask;
     }
