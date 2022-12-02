@@ -1,11 +1,11 @@
-import ru.yandex.manager.Manager;
+import ru.yandex.manager.History.InMemoryHistoryManager;
+import ru.yandex.manager.Task.InMemoryTaskManager;
 import ru.yandex.task.*;
-import ru.yandex.status.Status;
-
 import java.util.HashMap;
 
 public class Main {
-    static Manager manager = new Manager();
+    static InMemoryTaskManager manager = new InMemoryTaskManager();
+    static InMemoryHistoryManager history = new InMemoryHistoryManager();
 
     public static void main(String[] args) {
 
@@ -21,19 +21,35 @@ public class Main {
         Subtask subtask2 = manager.createSubtask("найти купальник", "купальник красного цвета", epic1);
 
         watchEpic();
-        //manager.watchSubtask();
+
+      /*  System.out.println(manager.getEpicById(3));
+        System.out.println(manager.getSubtaskById(4));
+        System.out.println(manager.getEpicById(6));
+        System.out.println(manager.getSubtaskById(5));
+        System.out.println(manager.getEpicById(3));
+        System.out.println(manager.getSubtaskById(4));
+        System.out.println(manager.getEpicById(6));
+        System.out.println(manager.getSubtaskById(5));
+        System.out.println(manager.getSubtaskById(5));
+        System.out.println(manager.getSubtaskById(5));
+        System.out.println(manager.getSubtaskById(5));
+        System.out.println(manager.getSubtaskById(5));
+        System.out.println(manager.getSubtaskById(5));
+        System.out.println(manager.getSubtaskById(5));
+        System.out.println(manager.getSubtaskById(5));
+        System.out.println(history.getHistory());
+*/
         //manager.getListSubtaskByEpic(3);
         // manager.updateStatusByIdSubtask(subtask1, ru.yandex.status.Status.DONE);
-        manager.checkStatusByEpic(3);
-        System.out.println("Посмотреть только подзадачи ");
-        watchSubtask();
+       // manager.checkStatusByEpic(3);
+        //System.out.println("Посмотреть только подзадачи ");
+        //watchSubtask();
         // manager.removeEpic(epic);
-        System.out.println("Посмотреть только Эпики ");
-        watchEpic();
-        manager.removeSubtask(subtask);
-        System.out.println("Посмотреть только Эпики ");
-        watchEpic();
-
+        //System.out.println("Посмотреть только Эпики ");
+        //watchEpic();
+        //manager.removeSubtask(subtask);
+        //System.out.println("Посмотреть только Эпики ");
+        //watchEpic();
 
     }
 
@@ -48,7 +64,9 @@ public class Main {
         HashMap<Integer, Epic> epics = manager.getEpics();
         for (Epic value : epics.values()) {
             System.out.println(value.toString());
-            watchSubtask();
+            for (Subtask subtask: value.getSubtasks().values()){
+                System.out.println(subtask.toString());
+            }
         }
     }
 
