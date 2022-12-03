@@ -1,8 +1,9 @@
-package ru.yandex.manager.Task;
+package ru.yandex.manager.task;
 
-import ru.yandex.manager.History.InMemoryHistoryManager;
+import ru.yandex.manager.history.InMemoryHistoryManager;
 import ru.yandex.task.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import ru.yandex.status.Status;
@@ -16,13 +17,13 @@ public class InMemoryTaskManager implements TaskManager {
 
     private HashMap<Integer, Subtask> subtasks = new HashMap<>();
 
-    public InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
+    private InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
+
+    private ArrayList<Task> viewHistory = new ArrayList<>();
     private Integer idIndex = 1;
 
     public void save() {
-
         idIndex = idIndex + 1;
-
     }
 
     @Override
@@ -42,22 +43,22 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTaskById(int id) {
-        inMemoryHistoryManager.checkListHistory();
         inMemoryHistoryManager.add(tasks.get(id));
+        add(tasks.get(id));
         return tasks.get(id);
     }
 
     @Override
     public Epic getEpicById(int id) {
-        inMemoryHistoryManager.checkListHistory();
         inMemoryHistoryManager.add(epics.get(id));
+        add(epics.get(id));
         return epics.get(id);
     }
 
     @Override
     public Subtask getSubtaskById(int id) {
-        inMemoryHistoryManager.checkListHistory();
         inMemoryHistoryManager.add(subtasks.get(id));
+        add(subtasks.get(id));
         return subtasks.get(id);
     }
 
@@ -166,6 +167,22 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public HashMap<Integer, Subtask> getSubtasks() {
         return subtasks;
+    }
+
+    @Override
+    public ArrayList<Task> getHistory() {
+
+        return viewHistory;
+    }
+
+    @Override
+    public void add(Task task) {
+        if (viewHistory.size() > 9) {
+            viewHistory.remove(0);
+            viewHistory.add(task);
+        } else {
+            viewHistory.add(task);
+        }
     }
 
 }

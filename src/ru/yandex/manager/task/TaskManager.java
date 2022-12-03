@@ -1,26 +1,26 @@
-package ru.yandex.manager.Task;
+package ru.yandex.manager.task;
 
 import ru.yandex.task.Epic;
 import ru.yandex.task.Subtask;
 import ru.yandex.task.Task;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public interface TaskManager {
 
 
-    public void removeAllTasks();
+    void removeAllTasks();
 
-    public void removeAllEpics();
+    void removeAllEpics();
 
-    public void removeAllSubtasks();
+    void removeAllSubtasks();
 
+    Task getTaskById(int id);
 
-    public Task getTaskById(int id);
+    Epic getEpicById(int id);
 
-    public Epic getEpicById(int id);
-
-    public Subtask getSubtaskById(int id);
+    Subtask getSubtaskById(int id);
 
     Task createTask(String name, String description);
 
@@ -40,11 +40,15 @@ public interface TaskManager {
 
     void updateSubtask(Subtask subtask);
 
-    public HashMap<Integer, Task> getTasks();
+    HashMap<Integer, Task> getTasks();
 
-    public HashMap<Integer, Epic> getEpics();
+    HashMap<Integer, Epic> getEpics();
 
-    public HashMap<Integer, Subtask> getSubtasks();
+    HashMap<Integer, Subtask> getSubtasks();
+
+    ArrayList<Task> getHistory();
+
+    void add(Task task);
 }
 
 

@@ -1,6 +1,7 @@
-import ru.yandex.manager.History.InMemoryHistoryManager;
-import ru.yandex.manager.Task.InMemoryTaskManager;
+import ru.yandex.manager.history.InMemoryHistoryManager;
+import ru.yandex.manager.task.InMemoryTaskManager;
 import ru.yandex.task.*;
+
 import java.util.HashMap;
 
 public class Main {
@@ -22,7 +23,7 @@ public class Main {
 
         watchEpic();
 
-      /*  System.out.println(manager.getEpicById(3));
+        System.out.println(manager.getEpicById(3));
         System.out.println(manager.getSubtaskById(4));
         System.out.println(manager.getEpicById(6));
         System.out.println(manager.getSubtaskById(5));
@@ -38,10 +39,11 @@ public class Main {
         System.out.println(manager.getSubtaskById(5));
         System.out.println(manager.getSubtaskById(5));
         System.out.println(history.getHistory());
-*/
+        System.out.println(manager.getHistory());
+
         //manager.getListSubtaskByEpic(3);
         // manager.updateStatusByIdSubtask(subtask1, ru.yandex.status.Status.DONE);
-       // manager.checkStatusByEpic(3);
+        // manager.checkStatusByEpic(3);
         //System.out.println("Посмотреть только подзадачи ");
         //watchSubtask();
         // manager.removeEpic(epic);
@@ -64,7 +66,7 @@ public class Main {
         HashMap<Integer, Epic> epics = manager.getEpics();
         for (Epic value : epics.values()) {
             System.out.println(value.toString());
-            for (Subtask subtask: value.getSubtasks().values()){
+            for (Subtask subtask : value.getSubtasks().values()) {
                 System.out.println(subtask.toString());
             }
         }
