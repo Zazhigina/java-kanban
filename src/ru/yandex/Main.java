@@ -1,3 +1,5 @@
+package ru.yandex;
+
 import ru.yandex.manager.history.InMemoryHistoryManager;
 import ru.yandex.manager.task.InMemoryTaskManager;
 import ru.yandex.task.*;
@@ -38,7 +40,7 @@ public class Main {
         System.out.println(manager.getSubtaskById(5));
         System.out.println(manager.getSubtaskById(5));
         System.out.println(manager.getSubtaskById(5));
-        System.out.println(history.getHistory());
+      
         System.out.println(manager.getHistory());
 
         //manager.getListSubtaskByEpic(3);
