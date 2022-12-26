@@ -1,6 +1,7 @@
 package ru.yandex.manager.task;
 
-import ru.yandex.manager.history.InMemoryHistoryManager;
+import ru.yandex.manager.Managers;
+import ru.yandex.manager.history.HistoryManager;
 import ru.yandex.task.*;
 
 import java.util.ArrayList;
@@ -10,17 +11,12 @@ import ru.yandex.status.Status;
 
 
 public class InMemoryTaskManager implements TaskManager {
-
     private HashMap<Integer, Task> tasks = new HashMap<>();
-
     private HashMap<Integer, Epic> epics = new HashMap<>();
-
     private HashMap<Integer, Subtask> subtasks = new HashMap<>();
-
-    private InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
-
-    private ArrayList<Task> viewHistory = new ArrayList<>();
     private Integer idIndex = 1;
+
+    private HistoryManager historyManager = Managers.getDefaultHistory();
 
     public void save() {
         idIndex = idIndex + 1;
@@ -29,36 +25,42 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void removeAllTasks() {
         this.tasks.clear();
+        for (Task removeTask : tasks.values()) {
+            historyManager.remove(removeTask.getId());
+        }
     }
 
     @Override
     public void removeAllEpics() {
         this.epics.clear();
+        for (Epic removeEpic : epics.values()) {
+            historyManager.remove(removeEpic.getId());
+        }
     }
 
     @Override
     public void removeAllSubtasks() {
         this.subtasks.clear();
+        for (Subtask removeSubtask : subtasks.values()) {
+            historyManager.remove(removeSubtask.getId());
+        }
     }
 
     @Override
     public Task getTaskById(int id) {
-        inMemoryHistoryManager.add(tasks.get(id));
-        add(tasks.get(id));
+        historyManager.add(tasks.get(id));
         return tasks.get(id);
     }
 
     @Override
     public Epic getEpicById(int id) {
-        inMemoryHistoryManager.add(epics.get(id));
-        add(epics.get(id));
+        historyManager.add(epics.get(id));
         return epics.get(id);
     }
 
     @Override
     public Subtask getSubtaskById(int id) {
-        inMemoryHistoryManager.add(subtasks.get(id));
-        add(subtasks.get(id));
+        historyManager.add(subtasks.get(id));
         return subtasks.get(id);
     }
 
@@ -93,11 +95,16 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void removeTask(Task task) {
         this.tasks.remove(task.getId());
+        historyManager.remove(task.getId());
     }
 
     @Override
     public void removeEpic(Epic epic) {
         this.epics.remove(epic.getId());
+        historyManager.remove(epic.getId());
+        for (Subtask subtask : epic.getSubtasks().values()) {
+            removeSubtask(subtask);
+        }
     }
 
     @Override
@@ -107,6 +114,9 @@ public class InMemoryTaskManager implements TaskManager {
 
             value.getSubtasks().remove(subtask.getId());
         }
+        this.subtasks.remove(subtask.getId());
+        historyManager.remove(subtask.getId());
+
 
     }
 
@@ -127,11 +137,13 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateEpic(Epic epic) {
         epics.put(epic.getId(), epic);
+        checkStatusByEpic(epic.getId());
     }
 
     @Override
     public void updateSubtask(Subtask subtask) {
         subtasks.put(subtask.getId(), subtask);
+        checkStatusByEpic(subtask.getId());
     }
 
     public void checkStatusByEpic(int id) {
@@ -171,18 +183,6 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public ArrayList<Task> getHistory() {
-
-        return viewHistory;
+        return historyManager.getHistory();
     }
-
-    @Override
-    public void add(Task task) {
-        if (viewHistory.size() > 9) {
-            viewHistory.remove(0);
-            viewHistory.add(task);
-        } else {
-            viewHistory.add(task);
-        }
-    }
-
 }

@@ -48,7 +48,6 @@ public interface TaskManager {
 
     ArrayList<Task> getHistory();
 
-    void add(Task task);
 }
 
 
