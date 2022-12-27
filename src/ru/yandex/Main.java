@@ -43,10 +43,11 @@ public class Main {
 
         System.out.println("История вызовов " + taskManager.getHistory());
         System.out.println("Обновили.Посмотреть только Эпики ");
-        watchEpic();
+        watchTask();
 
-        taskManager.removeTask(task);
         taskManager.removeEpic(epic);
+        taskManager.removeTask(task1);
+
 
         System.out.println("История вызовов после удаления" + taskManager.getHistory());
         System.out.println("Обновили.Посмотреть только ЭПИКИ ");
