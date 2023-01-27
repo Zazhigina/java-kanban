@@ -5,21 +5,22 @@ import ru.yandex.manager.task.TaskManager;
 
 import ru.yandex.task.*;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 public class Main {
     static TaskManager taskManager = Managers.getDefault();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
 
         Task task = taskManager.createTask("Сходить в магазин", "Купить все по списку");
         Task task1 = taskManager.createTask("Доделать задачу", "Исправить ошибки по учебе");
 
         Epic epic = taskManager.createEpic("зачеты", "сдать долги");
-        Subtask subtask = taskManager.createSubtask("матан", "долг по матрице", epic);
-        Subtask subtask1 = taskManager.createSubtask("химия", "зачет по полимерам", epic);
-        Subtask subtask2 = taskManager.createSubtask("Физика", "сдать курсач", epic);
+        Subtask subtask = taskManager.createSubtask("матан", "долг по матрице", 3);
+        Subtask subtask1 = taskManager.createSubtask("химия", "зачет по полимерам", 3);
+        Subtask subtask2 = taskManager.createSubtask("Физика", "сдать курсач", 3);
 
         Epic epic1 = taskManager.createEpic("Отпуск", "собрать вещи");
 

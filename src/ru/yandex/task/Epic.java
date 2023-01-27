@@ -1,9 +1,13 @@
 package ru.yandex.task;
 
+import ru.yandex.manager.task.TaskTypes;
+
 import java.util.HashMap;
 
 public class Epic extends Task {
     private HashMap<Integer, Subtask> subtasks = new HashMap<>();
+
+    private TaskTypes taskTypes = TaskTypes.EPIC;
 
     public Epic(int id, String name, String description) {
         super(id, name, description);
@@ -24,6 +28,9 @@ public class Epic extends Task {
     public void addSubtasks(Subtask subtask) {
         this.subtasks.put(subtask.getId(), subtask);
     }
-
+    @Override
+    public TaskTypes getTaskTypes() {
+        return taskTypes;
+    }
 
 }

@@ -1,5 +1,6 @@
 package ru.yandex.task;
 
+import ru.yandex.manager.task.TaskTypes;
 import ru.yandex.status.Status;
 
 public class Task {
@@ -7,6 +8,8 @@ public class Task {
     private String name;
     private String description;
     private Status status = Status.NEW;
+
+    private TaskTypes taskTypes = TaskTypes.TASK;
 
     public Task(int id, String name, String description) {
         this.id = id;
@@ -40,6 +43,10 @@ public class Task {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public TaskTypes getTaskTypes() {
+        return taskTypes;
     }
 
     public String toString() {
