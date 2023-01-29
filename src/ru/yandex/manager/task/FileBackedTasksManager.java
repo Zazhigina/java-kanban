@@ -27,9 +27,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     public void save() throws IOException {
-        FileWriter fileWriter = new FileWriter(file);
-
-        try (BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
 
             for (Task task : getTasks().values()) {
                 bufferedWriter.write(toString(task, null));
@@ -43,8 +41,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 bufferedWriter.write(toString(subtask, subtask.getEpicById()));
                 bufferedWriter.newLine();
             }
-
-            bufferedWriter.write(" \n" + historyToString(this.getHistoryManager()));
+            bufferedWriter.newLine();
+            bufferedWriter.write(historyToString(this.getHistoryManager()));
 
         } catch (IOException e) {
             throw new ManagerSaveException("Сохранение не произошло");
@@ -189,17 +187,17 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
 
     private static ArrayList<String> readFileContentsOrNull(File file) throws IOException {
-        ArrayList<String> readFile = new ArrayList<>();
-        FileReader reader = new FileReader(file);
-        BufferedReader br = new BufferedReader(reader);
-
-        while (br.ready()) {
-            String line = br.readLine();
-            readFile.add(line);
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            ArrayList<String> readFile = new ArrayList<>();
+            while (br.ready()) {
+                String line = br.readLine();
+                readFile.add(line);
+            }
+            br.close();
+            return readFile;
+        } catch (IOException e) {
+            throw new ManagerSaveException("Сохранение не произошло");
         }
-
-        br.close();
-        return readFile;
     }
 
 
