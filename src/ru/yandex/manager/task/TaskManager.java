@@ -1,12 +1,15 @@
 package ru.yandex.manager.task;
 
-import ru.yandex.task.Epic;
-import ru.yandex.task.Subtask;
-import ru.yandex.task.Task;
+import ru.yandex.entites.Epic;
+import ru.yandex.entites.Subtask;
+import ru.yandex.entites.Task;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public interface TaskManager {
 
@@ -21,13 +24,15 @@ public interface TaskManager {
 
     Epic getEpicById(int id) throws IOException;
 
+    void checkStatusByEpic(int id) throws Exception;
+
     Subtask getSubtaskById(int id) throws IOException;
 
-    Task createTask(String name, String description) throws IOException;
+    Task createTask(String name, String description, LocalDate startTime, Duration duration) throws IOException;
 
     Epic createEpic(String name, String description) throws IOException;
 
-    Subtask createSubtask(String name, String description, Integer IdEpic) throws IOException;
+    Subtask createSubtask(String name, String description, Integer IdEpic, LocalDate startTime, Duration duration) throws Exception;
 
     void removeTask(Task task) throws IOException;
 
@@ -37,9 +42,11 @@ public interface TaskManager {
 
     void updateTask(Task task) throws IOException;
 
-    void updateEpic(Epic epic) throws IOException;
+    void updateEpic(Epic epic) throws Exception;
 
-    void updateSubtask(Subtask subtask) throws IOException;
+    void updateSubtask(Subtask subtask) throws Exception;
+
+    List<Task> getPrioritizedTasks();
 
     HashMap<Integer, Task> getTasks();
 

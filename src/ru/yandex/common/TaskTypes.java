@@ -1,4 +1,4 @@
-package ru.yandex.manager.task;
+package ru.yandex.common;
 
 public enum TaskTypes {
     TASK,

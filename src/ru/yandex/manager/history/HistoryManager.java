@@ -1,6 +1,6 @@
 package ru.yandex.manager.history;
 
-import ru.yandex.task.Task;
+import ru.yandex.entites.Task;
 
 import java.util.ArrayList;
 

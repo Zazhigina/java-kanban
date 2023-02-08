@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class CustomLinkedList <T> {
+public class CustomLinkedList<T> {
     private Node<T> head;
     private Node<T> tail;
 
 
-    void linkLast( Node<T> node) {
+    void linkLast(Node<T> node) {
         final Node<T> oldTail = tail;
         node.setPrev(oldTail);
         tail = node;
@@ -24,7 +24,7 @@ public class CustomLinkedList <T> {
         List<T> tasksList = new ArrayList<>();
         Node<T> node = head;
         while (node != null) {
-            tasksList.add( node.getData());
+            tasksList.add(node.getData());
             node = node.getNext();
         }
         return tasksList;
@@ -34,9 +34,10 @@ public class CustomLinkedList <T> {
     Node<T> removeNode(Node<T> node) {
         Node<T> nodeNext = node.getNext();
         Node<T> nodePrev = node.getPrev();
+
         if (nodeNext == null && nodePrev == null) {
-            head=null;
-            tail=null;
+            head = null;
+            tail = null;
         }
         if (nodeNext != null && nodePrev == null) {
             head = nodeNext;
@@ -52,7 +53,9 @@ public class CustomLinkedList <T> {
 
         }
         return null;
+
     }
 
-
 }
+
+

@@ -1,10 +1,10 @@
-package ru.yandex.task;
+package ru.yandex.entites;
 
-import ru.yandex.manager.task.TaskTypes;
+import ru.yandex.common.TaskTypes;
 
 public class Subtask extends Task {
 
-    private Integer epics ;
+    private Integer epics;
 
     @Override
     public TaskTypes getTaskTypes() {
@@ -13,10 +13,10 @@ public class Subtask extends Task {
 
     private TaskTypes taskTypes = TaskTypes.SUBTASK;
 
-    public Subtask(int id, String name,String description,Integer IdEpic) {
-        super( id, name, description);
+    public Subtask(int id, String name, String description, Integer IdEpic) {
+        super(id, name, description);
 
-        this.epics =  IdEpic;
+        this.epics = IdEpic;
 
     }
 

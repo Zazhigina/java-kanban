@@ -1,4 +1,4 @@
-package ru.yandex.status;
+package ru.yandex.common;
 
 public enum Status {
     NEW,

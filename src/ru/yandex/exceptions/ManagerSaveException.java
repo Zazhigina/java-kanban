@@ -1,4 +1,4 @@
-package ru.yandex;
+package ru.yandex.exceptions;
 
 public class ManagerSaveException extends  RuntimeException{
 
