@@ -36,9 +36,9 @@ public interface TaskManager {
 
     void removeTask(Task task) throws IOException;
 
-    void removeEpic(Epic epic) throws IOException;
+    void removeEpic(Epic epic) throws Exception;
 
-    void removeSubtask(Subtask subtask) throws IOException;
+    void removeSubtask(Subtask subtask) throws Exception;
 
     void updateTask(Task task) throws IOException;
 

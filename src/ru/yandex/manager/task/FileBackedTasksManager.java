@@ -140,13 +140,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void removeEpic(Epic epic) throws IOException {
+    public void removeEpic(Epic epic) throws Exception {
         super.removeEpic(epic);
         save();
     }
 
     @Override
-    public void removeSubtask(Subtask subtask) throws IOException {
+    public void removeSubtask(Subtask subtask) throws Exception {
         super.removeSubtask(subtask);
         save();
     }

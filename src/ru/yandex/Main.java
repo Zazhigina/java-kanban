@@ -12,7 +12,7 @@ public class Main {
     public static TaskManager taskManager = Managers.getDefault();
 
     public static void main(String[] args) throws Exception {
-/*
+
 
        Task task = taskManager.createTask("Сходить в магазин", "Купить все по списку", LocalDate.of(2023, 02, 02), Duration.ofDays(1));
        Task task1 = taskManager.createTask("Доделать задачу", "Исправить ошибки по учебе", LocalDate.of(2023, 02, 03), Duration.ofDays(7));
@@ -53,7 +53,7 @@ public class Main {
         System.out.println("Обновили.Посмотреть только ПОДЗАДАЧИ ");
         watchSubtask();
     }*/
-    }
+
 
     static void watchTask() {
         HashMap<Integer, Task> tasks = taskManager.getTasks();

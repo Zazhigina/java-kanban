@@ -91,7 +91,7 @@ public class InMemoryTaskManager implements TaskManager {
         Task task = new Task(idIndex, name, description);
         task.setStartTime(startTime);
         task.setDuration(duration);
-        if (checkTaskCrossingRange(task)){
+        if (checkTaskCrossingRange(task)) {
             saveIndex();
             addPrioritizedTask(task);
             this.tasks.put(task.getId(), task);
@@ -142,7 +142,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void removeEpic(Epic epic) throws IOException {
+    public void removeEpic(Epic epic) throws Exception {
         if (epic != null) {
             this.epics.remove(epic.getId());
             historyManager.remove(epic.getId());
@@ -156,7 +156,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void removeSubtask(Subtask subtask) throws IOException {
+    public void removeSubtask(Subtask subtask) throws Exception {
         if (subtask != null) {
             for (Epic value : this.epics.values()) {
                 value.getSubtasks().remove(subtask.getId());
@@ -164,7 +164,7 @@ public class InMemoryTaskManager implements TaskManager {
             this.subtasks.remove(subtask.getId());
             historyManager.remove(subtask.getId());
             prioritizedTasks.remove(subtask);
-
+            updateEpic(this.epics.get(subtask.getEpicById()));
         }
     }
 
@@ -261,8 +261,8 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     public void checkTimeByEpic(int id) throws Exception {
-        LocalDate endTime = LocalDate.MAX;
-        LocalDate startTime = LocalDate.MAX;
+        LocalDate endTime = null;
+        LocalDate startTime = null;
         Duration duration = Duration.ZERO;
         LocalDate newTime;
         Epic epic = epics.get(id);
@@ -272,7 +272,7 @@ public class InMemoryTaskManager implements TaskManager {
             HashMap<Integer, Subtask> subtasks1 = epic.getSubtasks();
             for (Subtask subtask : subtasks1.values()) {
                 newTime = subtask.getStartTime();
-                if (newTime.isBefore(startTime)) {
+                if (null == startTime || newTime.isBefore(startTime)) {
                     startTime = newTime;
                     epic.setStartTime(startTime);
                 }
@@ -280,8 +280,11 @@ public class InMemoryTaskManager implements TaskManager {
                 epic.setDuration(duration);
             }
         }
-        endTime = epic.getEndTimeEpic(startTime, duration);
-        epic.setEndTime(endTime);
+        if (startTime != null && duration != null) {
+            endTime = epic.getEndTimeEpic(startTime, duration);
+            epic.setEndTime(endTime);
+        }
+        return;
     }
 
     public void addPrioritizedTask(Task task) {

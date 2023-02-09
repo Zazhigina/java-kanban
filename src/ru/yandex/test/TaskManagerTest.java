@@ -325,14 +325,14 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void removeEpic() throws IOException {
+    void removeEpic() throws Exception {
         taskManager.removeEpic(epic1);
         int size = taskManager.getEpics().size();
         assertEquals(2, size, "Количество не совпадает.");
     }
 
     @Test
-    void removeSubtask() throws IOException {
+    void removeSubtask() throws Exception {
         taskManager.removeSubtask(subtask);
         int size = taskManager.getSubtasks().size();
         assertEquals(2, size, "Количество не совпадает.");
