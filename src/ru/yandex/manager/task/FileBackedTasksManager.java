@@ -9,6 +9,9 @@ import ru.yandex.entites.Subtask;
 import ru.yandex.entites.Task;
 
 import java.io.*;
+import java.net.URI;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -23,9 +26,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     private static File file;
 
-
-    public FileBackedTasksManager(File file) {
-        this.file = file;
+    public FileBackedTasksManager(String path) {
+        this.file = new File(path);
     }
 
     public void save() throws IOException {
@@ -111,7 +113,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public Task createTask(String name, String description, LocalDate startTime, Duration duration) throws IOException {
+    public Task createTask(String name, String description, LocalDate startTime, Long duration) throws IOException {
         Task task = super.createTask(name, description, startTime, duration);
         save();
         return task;
@@ -125,7 +127,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public Subtask createSubtask(String name, String description, Integer IdEpic, LocalDate startTime, Duration duration) throws Exception {
+    public Subtask createSubtask(String name, String description, Integer IdEpic, LocalDate startTime, Long duration) throws Exception {
         Subtask subtask = super.createSubtask(name, description, IdEpic, startTime, duration);
         updateEpic(epics.get(IdEpic));
         save();
@@ -176,6 +178,16 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
+    public void addPrioritizedTask(Task task) {
+        super.addPrioritizedTask(task);
+    }
+
+    @Override
+    public List<Task> getPrioritizedTasks() {
+        return super.getPrioritizedTasks();
+    }
+
+    @Override
     public ArrayList<Task> getHistory() {
         return super.getHistory();
     }
@@ -206,14 +218,14 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         String description = parts[4];
         Integer epic = null;
         LocalDate startTime = null;
-        Duration duration = null;
+        Long duration = null;
         if (taskTypes == SUBTASK) {
             String epics = parts[7].trim();
             epic = Integer.parseInt(epics);
         }
         if (!parts[5].equals("null")) {
             startTime = LocalDate.parse(parts[5]);
-            duration = Duration.parse(parts[6]);
+            duration = Long.parseLong(parts[6]);
         }
         switch (taskTypes) {
             case TASK: {
@@ -241,11 +253,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return Optional.empty();
     }
 
-
-    public static FileBackedTasksManager loadFromFile(File file) throws IOException {
+    public static FileBackedTasksManager loadFromFile(String path) throws IOException {
       HashMap<Integer, Task> allTasks = new HashMap<>();
-        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
-        ArrayList<String> content = readFileContentsOrNull(file);
+        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(path);
+        ArrayList<String> content = readFileContentsOrNull(new File(path));
         if (!content.isEmpty()) {
             for (int i = 0; i < content.size(); i++) {
                 String line = content.get(i);
@@ -253,6 +264,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     Optional<Task> taskNew = fromString(line);
                     if (taskNew.isPresent()) {
                         Task task = taskNew.get();
+                        fileBackedTasksManager.addPrioritizedTask(task);
                         TaskTypes taskTypes = task.getTaskTypes();
                         switch (taskTypes) {
                             case TASK: {
@@ -318,18 +330,18 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
 
     public static void main(String[] args) throws Exception {
-        /*
-        File file = new File("resources\\task_history.scv");
-        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
+
+        File file1 = new File("resources\\task_history.scv");
+        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file1.toString());
 
 
-        Task task = fileBackedTasksManager.createTask("Сходить в магазин", "Купить все по списку", LocalDate.of(2023, 02, 02), Duration.ofDays(1));
-        Task task1 = fileBackedTasksManager.createTask("Доделать задачу", "Исправить ошибки по учебе", LocalDate.of(2023, 02, 03), Duration.ofDays(7));
+        Task task = fileBackedTasksManager.createTask("Сходить в магазин", "Купить все по списку", LocalDate.of(2023, 02, 02), 1L);
+        Task task1 = fileBackedTasksManager.createTask("Доделать задачу", "Исправить ошибки по учебе", LocalDate.of(2023, 02, 03), 1L);
 
         Epic epic = fileBackedTasksManager.createEpic("зачеты", "сдать долги");
-        Subtask subtask = fileBackedTasksManager.createSubtask("матан", "долг по матрице", 3, LocalDate.of(2023, 01, 20), Duration.ofDays(1));
-        Subtask subtask1 = fileBackedTasksManager.createSubtask("химия", "зачет по полимерам", 3, LocalDate.of(2023, 01, 01), Duration.ofDays(1));
-        Subtask subtask2 = fileBackedTasksManager.createSubtask("Физика", "сдать курсач", 3, LocalDate.of(2023, 01, 07), Duration.ofDays(6));
+        Subtask subtask = fileBackedTasksManager.createSubtask("матан", "долг по матрице", 3, LocalDate.of(2023, 01, 20), 1L);
+        Subtask subtask1 = fileBackedTasksManager.createSubtask("химия", "зачет по полимерам", 3, LocalDate.of(2023, 01, 01), 1L);
+        Subtask subtask2 = fileBackedTasksManager.createSubtask("Физика", "сдать курсач", 3, LocalDate.of(2023, 01, 07), 1L);
 
         Epic epic1 = fileBackedTasksManager.createEpic("Отпуск", "собрать вещи");
 
@@ -340,7 +352,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         System.out.println(fileBackedTasksManager.getSubtaskById(5));
         System.out.println("История вызовов " + fileBackedTasksManager.getHistory());
 
-        FileBackedTasksManager fileBackedTasksManager2 = loadFromFile(file);
+        FileBackedTasksManager fileBackedTasksManager2 = loadFromFile(file1.toString());
 
         HashMap<Integer, Task> tasks = fileBackedTasksManager2.getTasks();
         HashMap<Integer, Epic> epics = fileBackedTasksManager2.getEpics();
@@ -360,7 +372,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         }
 
         System.out.println("История вызовов " + fileBackedTasksManager2.getHistory().toString());
-        */
+
     }
 }
 

@@ -153,13 +153,13 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     public void returnIntWhenTaskCrossingDate() throws IOException {
-        Task noValidTask = taskManager.createTask("задача 2", "описание задачи 2", LocalDate.of(2023,02,02), Duration.ofDays(1));
+        Task noValidTask = taskManager.createTask("задача 2", "описание задачи 2", LocalDate.of(2023,02,02), 1L);
         assertNull( noValidTask);
     }
 
     @Test
     public void returnIntWhenSubTaskCrossingDate() throws Exception {
-        Subtask noValidSubTask =  taskManager.createSubtask("подзадача 1-1", "описание подзадачи 1-1",4, LocalDate.of(2023,02,02), Duration.ofDays(1));
+        Subtask noValidSubTask =  taskManager.createSubtask("подзадача 1-1", "описание подзадачи 1-1",4, LocalDate.of(2023,02,02), 1L);
         assertNull( noValidSubTask);
     }
 
@@ -421,7 +421,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     void updateTaskNull() throws IOException {
-        task = taskManager.createTask(null, null,LocalDate.EPOCH, Duration.ZERO);
+        task = taskManager.createTask(null, null,LocalDate.EPOCH, 0L);
         task.setDescription("Новое описание");
         task.setName("Новое");
         task.setStatus(Status.DONE);
@@ -452,7 +452,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void updateSubtaskNull() throws Exception {
         int epicId = epic.getId();
-        subtask = taskManager.createSubtask(null, null, epicId, LocalDate.EPOCH, Duration.ZERO);
+        subtask = taskManager.createSubtask(null, null, epicId, LocalDate.EPOCH, 0L);
         subtask.setDescription("Новое описание");
         subtask.setName("Новое");
         subtask.setStatus(Status.DONE);
@@ -593,7 +593,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
         assertNotNull(tasks, "Задачи не найдены.");
 
         String list = tasks.toString();
-        assertEquals("[id = 1; name = Test addNewTask; description = Test addNewTask1 description; status = NEW; startTime = 2023-02-02; duration = PT24H]",list, "Задачи не совпадают ");
+        assertEquals("[id = 1; name = Test addNewTask; description = Test addNewTask1 description; status = NEW; startTime = 2023-02-02; duration = 1]",list, "Задачи не совпадают ");
     }
 
     @Test
@@ -609,7 +609,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
         assertNotNull(tasks, "Задачи не найдены.");
 
         String list = tasks.toString();
-        assertEquals("[id = 1; name = Test addNewTask; description = Test addNewTask1 description; status = NEW; startTime = 2023-02-02; duration = PT24H]",
+        assertEquals("[id = 1; name = Test addNewTask; description = Test addNewTask1 description; status = NEW; startTime = 2023-02-02; duration = 1]",
                 list, "Задачи не совпадают ");
     }
 }

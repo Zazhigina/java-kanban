@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class HistoryManagerTest<T extends HistoryManager> {
     T historyManager = (T) Managers.getDefaultHistory();
-    TaskManager taskManager = new InMemoryTaskManager();;
+    TaskManager taskManager = new InMemoryTaskManager();
     Task task;
     Epic epic;
     Subtask subtask;
@@ -33,10 +33,10 @@ public class HistoryManagerTest<T extends HistoryManager> {
 
     @BeforeEach
     public void beforeEach() throws Exception {
-        task = taskManager.createTask("Test addNewTask", "Test addNewTask1 description", LocalDate.of(2023,02,02), Duration.ofDays(1));
+        task = taskManager.createTask("Test addNewTask", "Test addNewTask1 description", LocalDate.of(2023,02,02), 1L);
         epic = taskManager.createEpic("Test addNewEpic", "Test addNewEpic description");
-        subtask = taskManager.createSubtask("Test addNewSubtask", "Test addNewSubtask description", epic.getId(),LocalDate.of(2023,05,02),Duration.ofDays(1));
-        subtask1 = taskManager.createSubtask("Test addNewSubtask1", "Test addNewSubtask1 description", epic.getId(),LocalDate.of(2023,06,02),Duration.ofDays(1));
+        subtask = taskManager.createSubtask("Test addNewSubtask", "Test addNewSubtask description", epic.getId(),LocalDate.of(2023,05,02),1L);
+        subtask1 = taskManager.createSubtask("Test addNewSubtask1", "Test addNewSubtask1 description", epic.getId(),LocalDate.of(2023,06,02),1L);
 
     }
 

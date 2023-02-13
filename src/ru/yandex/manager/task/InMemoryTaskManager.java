@@ -7,7 +7,6 @@ import ru.yandex.entites.*;
 import java.util.List;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -87,7 +86,14 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Task createTask(String name, String description, LocalDate startTime, Duration duration) throws IOException {
+    public Epic getEpicBySubtask(int id) {
+            Subtask subtask = subtasks.get(id);
+            Integer idEpic = subtask.getEpicById();
+            return epics.get(idEpic);
+    }
+
+    @Override
+    public Task createTask(String name, String description, LocalDate startTime, Long duration) throws IOException {
         Task task = new Task(idIndex, name, description);
         task.setStartTime(startTime);
         task.setDuration(duration);
@@ -112,8 +118,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Subtask createSubtask(String name, String description, Integer IdEpic, LocalDate startTime, Duration
-            duration) throws Exception {
+    public Subtask createSubtask(String name, String description, Integer IdEpic, LocalDate startTime, Long duration) throws Exception {
         Subtask subtask = new Subtask(idIndex, name, description, IdEpic);
         subtask.setStartTime(startTime);
         subtask.setDuration(duration);
@@ -263,7 +268,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void checkTimeByEpic(int id) throws Exception {
         LocalDate endTime = null;
         LocalDate startTime = null;
-        Duration duration = Duration.ZERO;
+        Long duration = 0L;
         LocalDate newTime;
         Epic epic = epics.get(id);
         if (epic == null) {
@@ -276,7 +281,7 @@ public class InMemoryTaskManager implements TaskManager {
                     startTime = newTime;
                     epic.setStartTime(startTime);
                 }
-                duration = subtask.getDuration().plus(duration);
+                duration = subtask.getDuration() + duration;
                 epic.setDuration(duration);
             }
         }

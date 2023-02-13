@@ -20,26 +20,26 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager> {
-    protected File file = new File("testResources\\test.scv");
+    protected File file = new File("testResources/test.scv");
 
     FileBackedTasksManagerTest() throws IOException {
     }
 
     @BeforeEach
     public void beforeEach() throws Exception {
-        taskManager = new FileBackedTasksManager(file);
+        taskManager = new FileBackedTasksManager("testResources/test.scv");
 
-        task = taskManager.createTask("Test addNewTask", "Test addNewTask1 description", LocalDate.of(2023,02,02), Duration.ofDays(1));
-        task1 = taskManager.createTask("Test addNewTask1", "Test addNewTask1 description",LocalDate.of(2023,02,03),Duration.ofDays(1));
-        task2 = taskManager.createTask("Test addNewTask2", "Test addNewTask2 description",LocalDate.of(2023,02,04),Duration.ofDays(1));
+        task = taskManager.createTask("Test addNewTask", "Test addNewTask1 description", LocalDate.of(2023,02,02), 1L);
+        task1 = taskManager.createTask("Test addNewTask1", "Test addNewTask1 description",LocalDate.of(2023,02,03),1L);
+        task2 = taskManager.createTask("Test addNewTask2", "Test addNewTask2 description",LocalDate.of(2023,02,04),1L);
 
         epic = taskManager.createEpic("Test addNewEpic", "Test addNewEpic description");
         epic1 = taskManager.createEpic("Test addNewEpic1", "Test addNewEpic1 description");
         epic2 = taskManager.createEpic("Test addNewEpic2", "Test addNewEpic2 description");
 
-        subtask = taskManager.createSubtask("Test addNewSubtask", "Test addNewSubtask description", epic.getId(),LocalDate.of(2023,05,02),Duration.ofDays(1));
-        subtask1 = taskManager.createSubtask("Test addNewSubtask1", "Test addNewSubtask1 description", epic.getId(),LocalDate.of(2023,06,02),Duration.ofDays(1));
-        subtask2 = taskManager.createSubtask("Test addNewSubtask2", "Test addNewSubtask2 description", epic.getId(),LocalDate.of(2023,07,02),Duration.ofDays(1));
+        subtask = taskManager.createSubtask("Test addNewSubtask", "Test addNewSubtask description", epic.getId(),LocalDate.of(2023,05,02),1L);
+        subtask1 = taskManager.createSubtask("Test addNewSubtask1", "Test addNewSubtask1 description", epic.getId(),LocalDate.of(2023,06,02),1L);
+        subtask2 = taskManager.createSubtask("Test addNewSubtask2", "Test addNewSubtask2 description", epic.getId(),LocalDate.of(2023,07,02),1L);
     }
 
    @AfterEach
@@ -57,7 +57,7 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksM
         taskManager.getTaskById(1);
         taskManager.getEpicById(4);
         taskManager.getSubtaskById(7);
-        FileBackedTasksManager fileManager = FileBackedTasksManager.loadFromFile(file);
+        FileBackedTasksManager fileManager = FileBackedTasksManager.loadFromFile("testResources/test.scv");
 
         assertEquals(task.toString(), fileManager.getTaskById(1).toString());
         assertEquals(epic.toString(), fileManager.getEpicById(4).toString());
@@ -73,7 +73,7 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksM
         taskManager.removeAllEpics();
         taskManager.removeAllSubtasks();
 
-        FileBackedTasksManager fileManager = FileBackedTasksManager.loadFromFile(file);
+        FileBackedTasksManager fileManager = FileBackedTasksManager.loadFromFile("testResources/test.scv");
 
         assertTrue(fileManager.getTasks().isEmpty());
         assertTrue(fileManager.getEpics().isEmpty());
@@ -83,7 +83,7 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksM
     @Test
     public void shouldSaveAndLoadEmptyHistory() throws IOException {
 
-        FileBackedTasksManager fileManager = FileBackedTasksManager.loadFromFile(file);
+        FileBackedTasksManager fileManager = FileBackedTasksManager.loadFromFile("testResources/test.scv");
 
         assertTrue(fileManager.getHistory().isEmpty());
     }

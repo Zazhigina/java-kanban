@@ -13,15 +13,24 @@ public class Task {
     private String description;
     private Status status = Status.NEW;
 
-    private LocalDate startTime;
-    private Duration duration;
-    private TaskTypes taskTypes = TaskTypes.TASK;
-    private LocalDate endTime;
+    protected LocalDate startTime;
+    protected Long duration;
+    protected TaskTypes taskTypes;
+    protected LocalDate endTime;
 
+    public Task(int id, String name, String description, TaskTypes taskTypes) {
+        this.id = id;
+        this.name = name;
+        this.taskTypes = taskTypes;
+        this.description = description;
+
+    }
     public Task(int id, String name, String description) {
         this.id = id;
         this.name = name;
+        this.taskTypes = TaskTypes.TASK;
         this.description = description;
+
     }
 
     public Integer getId() {
@@ -64,11 +73,11 @@ public class Task {
         this.startTime = startTime;
     }
 
-    public Duration getDuration() {
+    public Long getDuration() {
         return duration;
     }
 
-    public void setDuration(Duration duration) {
+    public void setDuration(Long duration) {
         this.duration = duration;
     }
 
@@ -78,7 +87,7 @@ public class Task {
     }
 
     public LocalDate getEndTime() {
-        return this.endTime = this.startTime.plusDays(this.duration.toDays());
+        return this.endTime = this.startTime.plusDays(this.duration);
     }
 
     public boolean equals(Object o) {

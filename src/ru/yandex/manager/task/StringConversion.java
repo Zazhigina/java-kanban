@@ -12,10 +12,10 @@ public class StringConversion<T> extends Task {
     private Status status;
     private Integer epic;
     private LocalDate startTime;
-    private Duration duration;
+    private Long duration;
 
 
-    public StringConversion(int id, String name, String description, T type, Status status, Integer epic, LocalDate startTime, Duration duration) {
+    public StringConversion(int id, String name, String description, T type, Status status, Integer epic, LocalDate startTime, Long duration) {
         super(id, name, description);
         this.type = type;
         this.status = status;

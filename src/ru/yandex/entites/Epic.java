@@ -1,20 +1,13 @@
 package ru.yandex.entites;
-
 import ru.yandex.common.TaskTypes;
-
-import java.time.Duration;
 import java.time.LocalDate;
 import java.util.HashMap;
 
 public class Epic extends Task {
     private HashMap<Integer, Subtask> subtasks = new HashMap<>();
-    private LocalDate endTime = LocalDate.ofEpochDay(0);
-    private TaskTypes taskTypes = TaskTypes.EPIC;
-    private LocalDate startTime;
-    private  Duration duration;
     public Epic(int id, String name, String description) {
-        super(id, name, description);
-
+        super(id, name, description, TaskTypes.EPIC);
+        endTime = LocalDate.ofEpochDay(0);
     }
 
     public void setId(Integer id) {
@@ -41,8 +34,8 @@ public class Epic extends Task {
     public void setEndTime(LocalDate endTime) {
         this.endTime = endTime;
     }
-    public LocalDate getEndTimeEpic(LocalDate startTime,Duration duration) {
-         LocalDate newEndTime = startTime.plusDays(duration.toDays());
+    public LocalDate getEndTimeEpic(LocalDate startTime,Long duration) {
+         LocalDate newEndTime = startTime.plusDays(duration);
          if (newEndTime.isAfter(endTime)){
              return endTime=newEndTime;
          }

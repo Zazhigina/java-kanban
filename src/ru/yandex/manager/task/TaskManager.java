@@ -5,7 +5,6 @@ import ru.yandex.entites.Subtask;
 import ru.yandex.entites.Task;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,11 +27,13 @@ public interface TaskManager {
 
     Subtask getSubtaskById(int id) throws IOException;
 
-    Task createTask(String name, String description, LocalDate startTime, Duration duration) throws IOException;
+    Epic getEpicBySubtask(int id);
+
+    Task createTask(String name, String description, LocalDate startTime, Long duration) throws IOException;
 
     Epic createEpic(String name, String description) throws IOException;
 
-    Subtask createSubtask(String name, String description, Integer IdEpic, LocalDate startTime, Duration duration) throws Exception;
+    Subtask createSubtask(String name, String description, Integer IdEpic, LocalDate startTime, Long duration) throws Exception;
 
     void removeTask(Task task) throws IOException;
 
