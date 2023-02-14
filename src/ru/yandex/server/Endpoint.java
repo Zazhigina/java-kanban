@@ -10,4 +10,8 @@ public enum Endpoint {
     DELETE_TASK,
     DELETE_ALL,
     UNKNOWN;
+
+
 }
+
+

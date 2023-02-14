@@ -52,11 +52,19 @@ public class TaskHandler implements HttpHandler {
             }
             case GET_HISTORY:{
                 ArrayList<Task> getHistory = taskManager.getHistory();
+                if (getHistory.isEmpty()){
+                    writeResponse(exchange, "Пустая история задач", 204);
+                    return;
+                }
                 writeResponse(exchange, gson.toJson(getHistory), 200);
                 break;
             }
             case GET_PRIORITIZED:{
                 List<Task> getPrioritizedTasks = taskManager.getPrioritizedTasks();
+                if (getPrioritizedTasks.isEmpty()){
+                    writeResponse(exchange, "Список пустой", 204);
+                    return;
+                }
                 writeResponse(exchange, gson.toJson(getPrioritizedTasks), 200);
                 break;
             }

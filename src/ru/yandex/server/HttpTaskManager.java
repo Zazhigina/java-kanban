@@ -23,7 +23,8 @@ public class HttpTaskManager extends FileBackedTasksManager {
 
     private final HttpClient kvServerClient = HttpClient.newHttpClient();
     private String API_TOKEN;
-
+    private static final String SERVER = "http://localhost";
+    private static final String PORT = "8078";
     private String url;
 
     public HttpTaskManager(String path) {
@@ -38,7 +39,7 @@ public class HttpTaskManager extends FileBackedTasksManager {
                 .build();
 
         try {
-            HttpResponse<String> apiToken = kvServerClient.send(request,  HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> apiToken = kvServerClient.send(request, HttpResponse.BodyHandlers.ofString());
             this.API_TOKEN = apiToken.body();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -47,9 +48,9 @@ public class HttpTaskManager extends FileBackedTasksManager {
         }
     }
 
-    void put(String key, String json){
+    void put(String key, String json) {
 
-        URI tasksUri = URI.create("http://localhost:8078/save/"+ key + "?API_TOKEN=" + API_TOKEN);
+        URI tasksUri = URI.create(SERVER + ":" + PORT + "/save/" + key + "?API_TOKEN=" + API_TOKEN);
 
         HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(json)) // тело запроса - все задачи в формате json: "[{"id":1}, {"id":2}]"
@@ -57,19 +58,19 @@ public class HttpTaskManager extends FileBackedTasksManager {
                 .build();
     }
 
-    public String load (String key) throws IOException, InterruptedException {
-        URI tasksUri = URI.create("http://localhost:8078/load/"+ key + "?API_TOKEN=" + API_TOKEN);
+    public String load(String key) throws IOException, InterruptedException {
+        URI tasksUri = URI.create("http://localhost:8078/load/" + key + "?API_TOKEN=" + API_TOKEN);
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .header("Content-type", "application/json")
                 .uri(tasksUri)
                 .build();
 
-        return kvServerClient.send(request,  HttpResponse.BodyHandlers.ofString()).body();
+        return kvServerClient.send(request, HttpResponse.BodyHandlers.ofString()).body();
     }
 
     @Override
-    public void save() throws IOException{
+    public void save() throws IOException {
         URI tasksUri = URI.create("http://localhost:8078/save/tasks?API_TOKEN=" + API_TOKEN);
         URI epicUri = URI.create("http://localhost:8078/save/epics?API_TOKEN=" + API_TOKEN);
         URI subtasksUri = URI.create("http://localhost:8078/save/subtasks?API_TOKEN=" + API_TOKEN);

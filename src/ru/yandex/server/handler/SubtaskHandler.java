@@ -13,25 +13,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class SubtaskHandler extends TaskHandler {
-    @Override
-    protected Optional<Integer> getTaskId(HttpExchange exchange) {
-        return super.getTaskId(exchange);
-    }
 
-    @Override
-    protected Map<String, String> queryToMap(String query) {
-        return super.queryToMap(query);
-    }
-
-    @Override
-    protected Endpoint getEndpoint(String requestPath, String requestMethod) {
-        return super.getEndpoint(requestPath, requestMethod);
-    }
-
-    @Override
-    protected void writeResponse(HttpExchange exchange, String responseString, int responseCode) throws IOException {
-        super.writeResponse(exchange, responseString, responseCode);
-    }
 
     public SubtaskHandler(TaskManager taskManager) {
         super(taskManager);
@@ -69,7 +51,7 @@ public class SubtaskHandler extends TaskHandler {
                 }
                 int taskId = taskIdOpt.get();
                 if (!taskManager.getSubtasks().containsKey(taskId)){
-                    writeResponse(exchange, "С таким идентификатором нет подзадачи", 400);
+                    writeResponse(exchange, "С таким идентификатором нет подзадачи", 404);
                 }
                 String taskJson = gson.toJson(taskManager.getEpicBySubtask(taskId));
                 writeResponse(exchange, taskJson, 200);
